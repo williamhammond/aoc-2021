@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
 
   int x = 0;
   int y = 0;
+  int aim = 0;
   while (fgets(line, MAX_LINE_LENGTH, file)) {
     char* token = strtok(line, " ");
     move move = parseMove(token);
@@ -48,13 +49,14 @@ int main(int argc, char** argv) {
     int magnitude = atoi(token);
     switch (move) {
       case UP:
-        y -= magnitude;
+        aim -= magnitude;
         break;
       case DOWN:
-        y += magnitude;
+        aim += magnitude;
         break;
       case FORWARD:
         x += magnitude;
+        y += aim * magnitude;
         break;
       default:
         printf("Invalid move %d!", move);
