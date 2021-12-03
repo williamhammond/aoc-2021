@@ -20,18 +20,38 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  int prev = NULL;
+  int bottom = NULL;
+  int middle = NULL;
+  int top = NULL;
+
+  int previousSum = NULL;
+  int currentSum = 0;
   int result = 0;
+
+  int counter = 1;
   while (fgets(line, MAX_LINE_LENGTH, file)) {
     int current = atoi(line);
-    if (!prev) {
-      prev = current;
-      continue;
+    switch (counter % 3) {
+      case 0:
+        top = current;
+        break;
+      case 1:
+        bottom = current;
+        break;
+      case 2:
+        middle = current;
+        break;
+      default:
+        break;
     }
-    if (current > prev) {
-      result += 1;
+    if (top && middle && bottom) {
+      currentSum = bottom + middle + top;
+      if (previousSum && currentSum > previousSum) {
+        result++;
+      }
+      previousSum = currentSum;
     }
-    prev = current;
+    counter++;
   }
 
   if (fclose(file)) {
