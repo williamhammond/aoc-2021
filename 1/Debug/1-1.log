@@ -1,3 +1,0 @@
-﻿  main.c
-C:\Users\willi\Code\aoc-2021\1-1\main.c(25,1): warning C4047: 'initializing': 'int' differs in levels of indirection from 'void *'
-  1-1.vcxproj -> C:\Users\willi\Code\aoc-2021\1-1\Debug\1-1.exe
