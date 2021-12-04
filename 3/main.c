@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LINE_LENGTH 1024
-#define BIT_WIDTH 12
+#define MAX_BIT_STRINGS 12
+#define BIT_WIDTH 5
 
 long bitsToDecimal(const char* str) {
   long val = 0;
@@ -21,9 +21,8 @@ long bitsToDecimal(const char* str) {
 }
 
 int main(int argc, char** argv) {
-  char* path = "input.txt";
-  char line[MAX_LINE_LENGTH] = {0};
-  unsigned int line_count = 0;
+  char* path = "input-test.txt";
+  char line[BIT_WIDTH] = {0};
 
   FILE* file = fopen(path, "r");
 
@@ -32,37 +31,53 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  int zeroFrequencies[BIT_WIDTH] = {0, 0, 0, 0, 0};
-  int oneFrequencies[BIT_WIDTH] = {0, 0, 0, 0, 0};
-  while (fgets(line, MAX_LINE_LENGTH, file)) {
-    for (int i = 0; i < strlen(line); i++) {
-      if (line[i] == '0') {
-        zeroFrequencies[i] += 1;
+  char reports[MAX_BIT_STRINGS][BIT_WIDTH + 1];
+  int reportCount = 0;
+  while (fgets(line, BIT_WIDTH * 2, file)) {
+    line[strcspn(line, "\n")] = 0;
+    strncpy(reports[reportCount], line, BIT_WIDTH + 1);
+    reportCount++;
+  }
+
+  char zeroBuffer[MAX_BIT_STRINGS][BIT_WIDTH + 1];
+  char oneBuffer[MAX_BIT_STRINGS][BIT_WIDTH + 1];
+  for (int bitIdx = 0; bitIdx < BIT_WIDTH; bitIdx++) {
+    int zeroCount = 0;
+    int oneCount = 0;
+
+    for (int reportIdx = 0; reportIdx < reportCount; reportIdx++) {
+      char* report = reports[reportIdx];
+      if (report[bitIdx] == '0') {
+        strncpy(zeroBuffer[zeroCount], report, BIT_WIDTH + 1);
+        zeroCount++;
       } else {
-        oneFrequencies[i] += 1;
+        strncpy(oneBuffer[oneCount], report, BIT_WIDTH + 1);
+        oneCount++;
       }
     }
-  }
 
-  char gamma[BIT_WIDTH];
-  char epsilon[BIT_WIDTH];
-  for (int i = 0; i < BIT_WIDTH; i++) {
-    if (zeroFrequencies[i] > oneFrequencies[i]) {
-      gamma[i] = '0';
-      epsilon[i] = '1';
+    if (zeroCount > oneCount) {
+      reportCount = zeroCount;
+      for (int i = 0; i < reportCount; i++) {
+        strncpy(reports[i], zeroBuffer[i], BIT_WIDTH + 1);
+      }
     } else {
-      gamma[i] = '1';
-      epsilon[i] = '0';
+      reportCount = oneCount;
+      for (int i = 0; i < reportCount; i++) {
+        strncpy(reports[i], oneBuffer[i], BIT_WIDTH + 1);
+      }
+    }
+    if (bitIdx == (BIT_WIDTH - 1)) {
+      printf("Oxygen result %s\n", reports[0]);
     }
   }
-  printf("gamma: %ld\n", bitsToDecimal(gamma));
-  printf("epislon: %ld\n", bitsToDecimal(epsilon));
 
-  printf("Result: %ld", bitsToDecimal(gamma) * bitsToDecimal(epsilon));
   if (fclose(file)) {
     return EXIT_FAILURE;
     perror(path);
   }
+
   free(line);
+  puts("Program completed successfully");
   return EXIT_SUCCESS;
 }
