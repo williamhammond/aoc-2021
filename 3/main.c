@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_BIT_STRINGS 12
-#define BIT_WIDTH 5
+#define MAX_BIT_STRINGS 1000
+#define BIT_WIDTH 12
 
 long bitsToDecimal(const char* str) {
   long val = 0;
@@ -21,7 +21,7 @@ long bitsToDecimal(const char* str) {
 }
 
 int main(int argc, char** argv) {
-  char* path = "input-test.txt";
+  char* path = "input.txt";
   char line[BIT_WIDTH] = {0};
 
   FILE* file = fopen(path, "r");
@@ -77,7 +77,6 @@ int main(int argc, char** argv) {
     perror(path);
   }
 
-  free(line);
   puts("Program completed successfully");
   return EXIT_SUCCESS;
 }
