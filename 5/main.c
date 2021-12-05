@@ -10,6 +10,17 @@
 #define MAX_LINE_LENGTH 1024
 #define VENT_COUNT 500
 
+enum DIRECTION {
+  NORTH,
+  NORTH_EAST,
+  EAST,
+  SOUTH_EAST,
+  SOUTH,
+  SOUTH_WEST,
+  WEST,
+  NORTH_WEST
+};
+
 typedef struct point {
   int x;
   int y;
@@ -38,7 +49,7 @@ int main(int argc, char** argv) {
     int x1, y1, x2, y2 = 0;
     int read = sscanf(line, "%d,%d -> %d,%d", &x1, &y1, &x2, &y2);
     if (read != 4) {
-      // printf("Read %d from line", read);
+      printf("Read %d from line", read);
       return EXIT_FAILURE;
     }
     if (maxX < x1) {
@@ -77,38 +88,78 @@ int main(int argc, char** argv) {
   int dangerousTiles = 0;
 
   for (int ventIdx = 0; ventIdx < ventCount; ventIdx++) {
-    if (vents[ventIdx].start.x == vents[ventIdx].end.x) {
-      // printLine(vents[ventIdx]);
-      int lower = (vents[ventIdx].start.y < vents[ventIdx].end.y)
-                      ? vents[ventIdx].start.y
-                      : vents[ventIdx].end.y;
-      int upper = (vents[ventIdx].start.y > vents[ventIdx].end.y)
-                      ? vents[ventIdx].start.y
-                      : vents[ventIdx].end.y;
-      for (int i = lower; i <= upper; i++) {
-        // printf("Increasing x=%d y=%d from %d to %d\n", vents[ventIdx].start.x,
-        //        i, grid[vents[ventIdx].start.x][i],
-        //        grid[vents[ventIdx].start.x][i] + 1);
-        grid[vents[ventIdx].start.x][i]++;
-      }
-      // printGrid(grid, maxX, maxY);
+    struct line vent = vents[ventIdx];
+    struct point start = vent.start;
+    struct point end = vent.end;
 
-    } else if (vents[ventIdx].start.y == vents[ventIdx].end.y) {
-      // printLine(vents[ventIdx]);
-      int lower = (vents[ventIdx].start.x < vents[ventIdx].end.x)
-                      ? vents[ventIdx].start.x
-                      : vents[ventIdx].end.x;
-      int upper = (vents[ventIdx].start.x > vents[ventIdx].end.x)
-                      ? vents[ventIdx].start.x
-                      : vents[ventIdx].end.x;
-      for (int i = lower; i <= upper; i++) {
-        // printf("Increasing x=%d y=%d from %d to %d\n", i,
-        //        vents[ventIdx].start.y, grid[i][vents[ventIdx].start.y],
-        //        grid[i][vents[ventIdx].start.y] + 1);
-        grid[i][vents[ventIdx].start.y]++;
-      }
-      // printGrid(grid, maxX, maxY);
+    struct point current = start;
+
+    switch (orientation(start, end)) {
+      case NORTH:
+        while ((current.x != end.x) || (current.y != end.y)) {
+          grid[current.x][current.y]++;
+          current.x--;
+        }
+        break;
+
+      case NORTH_EAST:
+        while ((current.x != end.x) || (current.y != end.y)) {
+          grid[current.x][current.y]++;
+          current.x++;
+          current.y--;
+        }
+        break;
+
+      case EAST:
+        while ((current.x != end.x) || (current.y != end.y)) {
+          grid[current.x][current.y]++;
+          current.y++;
+        }
+        break;
+
+      case SOUTH_EAST:
+        while ((current.x != end.x) || (current.y != end.y)) {
+          grid[current.x][current.y]++;
+          current.x++;
+          current.y++;
+        }
+        break;
+
+      case SOUTH:
+        while ((current.x != end.x) || (current.y != end.y)) {
+          grid[current.x][current.y]++;
+          current.x++;
+        }
+        break;
+
+      case SOUTH_WEST:
+        while ((current.x != end.x) || (current.y != end.y)) {
+          grid[current.x][current.y]++;
+          current.x--;
+          current.y++;
+        }
+        break;
+
+      case WEST:
+        while ((current.x != end.x) || (current.y != end.y)) {
+          grid[current.x][current.y]++;
+          current.y--;
+        }
+        break;
+
+      case NORTH_WEST:
+        while ((current.x != end.x) || (current.y != end.y)) {
+          grid[current.x][current.y]++;
+          current.x--;
+          current.y--;
+        }
+        break;
+      default:
+        printf("Bad orientation for:\n");
+        printLine(vent);
+        return EXIT_FAILURE;
     }
+    grid[end.x][end.y]++;
   }
 
   for (int i = 0; i <= maxX; i++) {
@@ -124,7 +175,6 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
     perror(path);
   }
-  free(line);
   printf("Program exited sucessfully");
   return EXIT_SUCCESS;
 }
@@ -145,4 +195,40 @@ void printGrid(int grid[512][512], int maxX, int maxY) {
     puts("");
   }
   puts("");
+}
+
+int orientation(point start, point end) {
+  if ((start.x > end.x) && (start.y == end.y)) {
+    return NORTH;
+  }
+
+  if ((start.x < end.x) && (start.y > end.y)) {
+    return NORTH_EAST;
+  }
+
+  if ((start.x == end.x) && (start.y < end.y)) {
+    return EAST;
+  }
+
+  if ((start.x < end.x) && (start.y < end.y)) {
+    return SOUTH_EAST;
+  }
+
+  if ((start.x < end.x) && (start.y == end.y)) {
+    return SOUTH;
+  }
+
+  if ((start.x > end.x) && (start.y < end.y)) {
+    return SOUTH_WEST;
+  }
+
+  if ((start.x == end.x) && (start.y > end.y)) {
+    return WEST;
+  }
+
+  if ((start.x > end.x) && (start.y > end.y)) {
+    return NORTH_WEST;
+  }
+
+  return -1;
 }
