@@ -63,6 +63,8 @@ int main(int argc, char** argv) {
 
   int winningBoard = -1;
   int lastMove = -1;
+  int hasWon[BOARD_COUNT] = {};
+  int winnerCount = 0;
   for (int j = 0; j < moveCount; j++) {
     int move = moves[j];
     for (int row = 0; row < BINGO_SIZE; row++) {
@@ -74,9 +76,15 @@ int main(int argc, char** argv) {
             boards[boardIdx][row][col] = -1;
             // printBoard(boards[boardIdx]);
             if (isWinner(boards[boardIdx]) == TRUE) {
+              if (hasWon[boardIdx] == 0) {
+                hasWon[boardIdx] = 1;
+                winnerCount += 1;
+              }
               winningBoard = boardIdx;
               lastMove = move;
-              goto winner;
+              if (winnerCount == BOARD_COUNT) {
+                goto winner;
+              }
             }
           }
         }
