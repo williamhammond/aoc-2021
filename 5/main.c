@@ -138,7 +138,7 @@ int main(int argc, char** argv) {
     ventCount++;
   }
 
-  int grid[1024][1024] = {};
+  int grid[1024][1024] = {0};
   int dangerousTiles = 0;
 
   for (int ventIdx = 0; ventIdx < ventCount; ventIdx++) {
