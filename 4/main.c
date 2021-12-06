@@ -1,5 +1,6 @@
 #if WIN32
 #define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_WARNINGS
 #endif
 
 #include <stdio.h>
@@ -98,7 +99,7 @@ int main(int argc, char** argv) {
   // Eat leading newline
   fgets(line, MAX_LINE_LENGTH, file);
 
-  int boards[BOARD_COUNT][BINGO_SIZE][BINGO_SIZE] = {};
+  int boards[BOARD_COUNT][BINGO_SIZE][BINGO_SIZE] = {0};
   int boardCount = 0;
   int rowCount = 0;
   while (fgets(line, MAX_LINE_LENGTH, file)) {
@@ -109,7 +110,11 @@ int main(int argc, char** argv) {
       continue;
     }
 
-    int a, b, c, d, e;
+    int a;
+    int b;
+    int c;
+    int d;
+    int e;
     sscanf(line, "%d%d%d%d%d", &a, &b, &c, &d, &e);
 
     boards[boardCount][rowCount][0] = a;
@@ -122,7 +127,7 @@ int main(int argc, char** argv) {
 
   int winningBoard = -1;
   int lastMove = -1;
-  int hasWon[BOARD_COUNT] = {};
+  int hasWon[BOARD_COUNT] = {0};
   int winnerCount = 0;
   for (int j = 0; j < moveCount; j++) {
     int move = moves[j];
@@ -130,10 +135,7 @@ int main(int argc, char** argv) {
       for (int col = 0; col < BINGO_SIZE; col++) {
         for (int boardIdx = 0; boardIdx < BOARD_COUNT; boardIdx++) {
           if (boards[boardIdx][row][col] == move) {
-            // printf("Move %d matched board %d row=%d col=%d with value %d\n",
-            //        move, boardIdx, row, col, boards[boardIdx][row][col]);
             boards[boardIdx][row][col] = -1;
-            // printBoard(boards[boardIdx]);
             if (isWinner(boards[boardIdx]) == TRUE) {
               if (hasWon[boardIdx] == 0) {
                 hasWon[boardIdx] = 1;

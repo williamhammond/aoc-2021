@@ -1,6 +1,7 @@
 
 #if WIN32
 #define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_WARNINGS
 #endif
 
 #include <stdio.h>
@@ -9,6 +10,7 @@
 
 #define MAX_LINE_LENGTH 1024
 #define VENT_COUNT 500
+#define MAX_GRID_SIZE 512
 
 enum DIRECTION {
   NORTH,
@@ -38,7 +40,7 @@ void printLine(line line) {
 
 void printPoint(point point) { printf("(%d, %d)", point.x, point.y); }
 
-void printGrid(int grid[512][512], int maxX, int maxY) {
+void printGrid(int grid[MAX_GRID_SIZE][MAX_GRID_SIZE], int maxX, int maxY) {
   puts("");
   for (int i = 0; i <= maxX; i++) {
     for (int j = 0; j <= maxY; j++) {
@@ -100,7 +102,11 @@ int main(int argc, char** argv) {
   int maxX = 0;
   int maxY = 0;
   while (fgets(line, MAX_LINE_LENGTH, file)) {
-    int x1, y1, x2, y2 = 0;
+    int x1;
+    int y1;
+    int x2;
+    int y2;
+
     int read = sscanf(line, "%d,%d -> %d,%d", &x1, &y1, &x2, &y2);
     if (read != 4) {
       printf("Read %d from line", read);
@@ -138,7 +144,7 @@ int main(int argc, char** argv) {
     ventCount++;
   }
 
-  int grid[1024][1024] = {0};
+  int grid[MAX_GRID_SIZE][MAX_GRID_SIZE] = {0};
   int dangerousTiles = 0;
 
   for (int ventIdx = 0; ventIdx < ventCount; ventIdx++) {
