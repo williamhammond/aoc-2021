@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
   printf("\n");
 
   for (int day = 1; day <= DAYS; day++) {
-    long long justSpawned = fishCounts[0];             // NOLINT
+    long long justSpawned = fishCounts[0];       // NOLINT
     fishCounts[0] = fishCounts[1];               // NOLINT
     fishCounts[1] = fishCounts[2];               // NOLINT
     fishCounts[2] = fishCounts[3];               // NOLINT
