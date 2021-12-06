@@ -13,6 +13,65 @@
 #define TRUE 1
 #define FALSE 0
 
+void printBoard(int board[BINGO_SIZE][BINGO_SIZE]) {
+  puts("");
+  for (int i = 0; i < BINGO_SIZE; i++) {
+    for (int j = 0; j < BINGO_SIZE; j++) {
+      printf("%d ", board[i][j]);
+    }
+    puts("");
+  }
+  puts("");
+}
+
+int isRowWin(int board[BINGO_SIZE][BINGO_SIZE]) {
+  for (int i = 0; i < BINGO_SIZE; i++) {
+    int isWin = TRUE;
+    for (int j = 0; j < BINGO_SIZE; j++) {
+      if (board[i][j] != -1) {
+        isWin = FALSE;
+      }
+    }
+    if (isWin) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+int isColWin(int board[BINGO_SIZE][BINGO_SIZE]) {
+  for (int i = 0; i < BINGO_SIZE; i++) {
+    int isWin = TRUE;
+    for (int j = 0; j < BINGO_SIZE; j++) {
+      if (board[j][i] != -1) {
+        isWin = FALSE;
+      }
+    }
+    if (isWin) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+int isWinner(int board[BINGO_SIZE][BINGO_SIZE]) {
+  return isColWin(board) || isRowWin(board);
+}
+
+int getScore(int board[BINGO_SIZE][BINGO_SIZE], int move) {
+  int sum = 0;
+  for (int i = 0; i < BINGO_SIZE; i++) {
+    for (int j = 0; j < BINGO_SIZE; j++) {
+      if (board[i][j] != -1) {
+        sum += board[i][j];
+      }
+    }
+  }
+  printf("%d * %d = %d\n", sum, move, sum * move);
+
+  return sum * move;
+}
+
 int main(int argc, char** argv) {
   char* path = "input.txt";
 
@@ -102,63 +161,4 @@ winner:
     perror(path);
   }
   return EXIT_SUCCESS;
-}
-
-void printBoard(int board[BINGO_SIZE][BINGO_SIZE]) {
-  puts("");
-  for (int i = 0; i < BINGO_SIZE; i++) {
-    for (int j = 0; j < BINGO_SIZE; j++) {
-      printf("%d ", board[i][j]);
-    }
-    puts("");
-  }
-  puts("");
-}
-
-int isRowWin(int board[BINGO_SIZE][BINGO_SIZE]) {
-  for (int i = 0; i < BINGO_SIZE; i++) {
-    int isWin = TRUE;
-    for (int j = 0; j < BINGO_SIZE; j++) {
-      if (board[i][j] != -1) {
-        isWin = FALSE;
-      }
-    }
-    if (isWin) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
-
-int isColWin(int board[BINGO_SIZE][BINGO_SIZE]) {
-  for (int i = 0; i < BINGO_SIZE; i++) {
-    int isWin = TRUE;
-    for (int j = 0; j < BINGO_SIZE; j++) {
-      if (board[j][i] != -1) {
-        isWin = FALSE;
-      }
-    }
-    if (isWin) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
-
-int isWinner(int board[BINGO_SIZE][BINGO_SIZE]) {
-  return isColWin(board) || isRowWin(board);
-}
-
-int getScore(int board[BINGO_SIZE][BINGO_SIZE], int move) {
-  int sum = 0;
-  for (int i = 0; i < BINGO_SIZE; i++) {
-    for (int j = 0; j < BINGO_SIZE; j++) {
-      if (board[i][j] != -1) {
-        sum += board[i][j];
-      }
-    }
-  }
-  printf("%d * %d = %d\n", sum, move, sum * move);
-
-  return sum * move;
 }

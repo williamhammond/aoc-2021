@@ -30,7 +30,6 @@ move parseMove(char* move) {
 int main(int argc, char** argv) {
   char* path = "input.txt";
   char line[MAX_LINE_LENGTH] = {0};
-  unsigned int line_count = 0;
 
   FILE* file = fopen(path, "r");
 
@@ -68,7 +67,6 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
     perror(path);
   }
-  free(line);
   printf("x: %d, y: %d\n", x, y);
   return EXIT_SUCCESS;
 }

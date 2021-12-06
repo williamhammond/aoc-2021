@@ -31,6 +31,60 @@ typedef struct line {
   point end;
 } line;
 
+void printLine(line line) {
+  printf("(%d, %d) -> (%d, %d)\n", line.start.x, line.start.y, line.end.x,
+         line.end.y);
+}
+
+void printPoint(point point) { printf("(%d, %d)", point.x, point.y); }
+
+void printGrid(int grid[512][512], int maxX, int maxY) {
+  puts("");
+  for (int i = 0; i <= maxX; i++) {
+    for (int j = 0; j <= maxY; j++) {
+      printf("%d ", grid[i][j]);
+    }
+    puts("");
+  }
+  puts("");
+}
+
+int orientation(point start, point end) {
+  if ((start.x > end.x) && (start.y == end.y)) {
+    return NORTH;
+  }
+
+  if ((start.x < end.x) && (start.y > end.y)) {
+    return NORTH_EAST;
+  }
+
+  if ((start.x == end.x) && (start.y < end.y)) {
+    return EAST;
+  }
+
+  if ((start.x < end.x) && (start.y < end.y)) {
+    return SOUTH_EAST;
+  }
+
+  if ((start.x < end.x) && (start.y == end.y)) {
+    return SOUTH;
+  }
+
+  if ((start.x > end.x) && (start.y < end.y)) {
+    return SOUTH_WEST;
+  }
+
+  if ((start.x == end.x) && (start.y > end.y)) {
+    return WEST;
+  }
+
+  if ((start.x > end.x) && (start.y > end.y)) {
+    return NORTH_WEST;
+  }
+
+  return -1;
+}
+
 int main(int argc, char** argv) {
   char* path = "input.txt";
   char line[MAX_LINE_LENGTH] = {0};
@@ -177,58 +231,4 @@ int main(int argc, char** argv) {
   }
   printf("Program exited sucessfully");
   return EXIT_SUCCESS;
-}
-
-void printLine(line line) {
-  printf("(%d, %d) -> (%d, %d)\n", line.start.x, line.start.y, line.end.x,
-         line.end.y);
-}
-
-void printPoint(point point) { printf("(%d, %d)", point.x, point.y); }
-
-void printGrid(int grid[512][512], int maxX, int maxY) {
-  puts("");
-  for (int i = 0; i <= maxX; i++) {
-    for (int j = 0; j <= maxY; j++) {
-      printf("%d ", grid[i][j]);
-    }
-    puts("");
-  }
-  puts("");
-}
-
-int orientation(point start, point end) {
-  if ((start.x > end.x) && (start.y == end.y)) {
-    return NORTH;
-  }
-
-  if ((start.x < end.x) && (start.y > end.y)) {
-    return NORTH_EAST;
-  }
-
-  if ((start.x == end.x) && (start.y < end.y)) {
-    return EAST;
-  }
-
-  if ((start.x < end.x) && (start.y < end.y)) {
-    return SOUTH_EAST;
-  }
-
-  if ((start.x < end.x) && (start.y == end.y)) {
-    return SOUTH;
-  }
-
-  if ((start.x > end.x) && (start.y < end.y)) {
-    return SOUTH_WEST;
-  }
-
-  if ((start.x == end.x) && (start.y > end.y)) {
-    return WEST;
-  }
-
-  if ((start.x > end.x) && (start.y > end.y)) {
-    return NORTH_WEST;
-  }
-
-  return -1;
 }

@@ -11,7 +11,6 @@
 int main(int argc, char** argv) {
   char* path = "input.txt";
   char line[MAX_LINE_LENGTH] = {0};
-  unsigned int line_count = 0;
 
   FILE* file = fopen(path, "r");
 
@@ -20,11 +19,11 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  int bottom = NULL;
-  int middle = NULL;
-  int top = NULL;
+  int bottom = -1;
+  int middle = -1;
+  int top = -1;
 
-  int previousSum = NULL;
+  int previousSum = -1;
   int currentSum = 0;
   int result = 0;
 
@@ -44,9 +43,9 @@ int main(int argc, char** argv) {
       default:
         break;
     }
-    if (top && middle && bottom) {
+    if ((top != -1) && (middle != -1) && (bottom != -1)) {
       currentSum = bottom + middle + top;
-      if (previousSum && currentSum > previousSum) {
+      if ((previousSum != -1) && currentSum > previousSum) {
         result++;
       }
       previousSum = currentSum;
