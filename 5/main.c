@@ -232,9 +232,8 @@ int main(int argc, char** argv) {
   printf("Number of dangerous tiles is %d\n", dangerousTiles);
 
   if (fclose(file)) {
-    return EXIT_FAILURE;
     perror(path);
+    return EXIT_FAILURE;
   }
-  printf("Program exited sucessfully");
   return EXIT_SUCCESS;
 }
