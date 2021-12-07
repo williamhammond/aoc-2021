@@ -12,7 +12,7 @@
         "${fileDirname}\\${fileBasenameNoExtension}.exe",
         "-Wall",
         "-Wextra",
-        "-Wl,--stack,16777216",
+        "-Wl,--stack,67108864",
         "-Werror",
         "-Wno-unused-parameter"
       ],
