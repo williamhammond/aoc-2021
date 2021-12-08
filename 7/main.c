@@ -12,7 +12,7 @@
 #define MAX_LINE_LENGTH 8192
 
 int main(int argc, char** argv) {
-  char* path = "input.txt";
+  char* path = "test.txt";
 
   FILE* file = fopen(path, "r");
 
@@ -35,16 +35,24 @@ int main(int argc, char** argv) {
     }
   }
 
-  int differences[MAX_CRAB_COUNT][MAX_CRAB_COUNT] = {0};
+  unsigned long long differences[MAX_CRAB_COUNT][MAX_CRAB_COUNT] = {0};
   for (int i = 0; i < crabCount - 1; i++) {
     for (int j = i + 1; j < crabCount; j++) {
-      differences[i][j] = abs(crabsPositions[i] - crabsPositions[j]);
-      differences[j][i] = abs(crabsPositions[i] - crabsPositions[j]);
+      unsigned long long cost = 0;
+      unsigned long long difference =
+          abs(crabsPositions[i] - crabsPositions[j]);
+
+      for (unsigned long long step = 1; step <= difference; step++) {
+        cost += step;
+      }
+
+      differences[i][j] = cost;
+      differences[j][i] = cost;
     }
   }
-  int answer = INT_MAX;
+  unsigned long long answer = LLONG_MAX;
   for (int i = 0; i < crabCount; i++) {
-    int sum = 0;
+    unsigned long long sum = 0;
     for (int j = 0; j < crabCount; j++) {
       sum += (differences[j][i]);
     }
@@ -52,7 +60,7 @@ int main(int argc, char** argv) {
       answer = sum;
     }
   }
-  printf("Answer: %d\n", answer);
+  printf("Answer: %llu\n", answer);
 
   if (fclose(file)) {
     return EXIT_FAILURE;
