@@ -9,17 +9,14 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <iostream>
 #include <map>
 #include <set>
 #include <vector>
 
 #define MAX_LINE_LENGTH 8192
-#define SIZE 200
-#define MAX_DECODED_SIZE 16
 
 auto main(int argc, char** argv) -> int {
-  char const* path = "input.txt";
+  auto const* path = "input.txt";
 
   FILE* file = fopen(path, "r");
 
@@ -32,6 +29,7 @@ auto main(int argc, char** argv) -> int {
   int total = 0;
   while (fgets(line, MAX_LINE_LENGTH, file) != nullptr) {
     line[strcspn(line, "\n")] = 0;
+
     char* signals = strtok(line, "|");
     char* output = strtok(nullptr, "|");
 
@@ -51,7 +49,7 @@ auto main(int argc, char** argv) -> int {
     char* digit = strtok(output, " ");
     std::string decoded;
     while (digit != nullptr) {
-      uint64_t length = strlen(digit);
+      uint64_t const length = strlen(digit);
       std::set<std::string> digitSet;
       for (uint64_t i = 0; i < strlen(digit); i++) {
         std::string c = std::string(1, digit[i]);
@@ -98,6 +96,7 @@ auto main(int argc, char** argv) -> int {
             decoded.append("9");
           }
           if (fourIntersections.size() == 3) {
+          if (fourIntersections.size() == 3) {
             if (twoIntersections.size() == 1) {
               decoded.append("6");
             }
@@ -118,8 +117,8 @@ auto main(int argc, char** argv) -> int {
   printf("Result: %d\n", total);
 
   if (fclose(file) != 0) {
-    return EXIT_FAILURE;
     perror(path);
+    return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
 }
