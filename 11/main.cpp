@@ -90,12 +90,20 @@ auto count_flashes(std::vector<std::vector<int>>& grid) {
   return flashes;
 }
 
+auto all_flash(std::vector<std::vector<int>>& grid) -> int {
+  int flashes = 0;
+  int step = 0;
+  for (step = 0; flashes != (GRID_SIZE * GRID_SIZE); step++) {
+    flashes = simulate_step(grid);
+  }
+  return step;
+}
+
 auto main() -> int {
   std::vector<std::vector<int>> grid = get_grid();
-  std::cout << "Initial board: ";
-  print_grid(grid);
-  int flashes = count_flashes(grid);
-  std::cout << "Total flashes at step " << STEPS << ": " << flashes
-            << std::endl;
-  print_grid(grid);
+  // int flashes = count_flashes(grid);
+  // std::cout << "Total flashes at step " << STEPS << ": " << flashes
+  //           << std::endl;
+  int step = all_flash(grid);
+  std::cout << "All flash: " << step;
 }
